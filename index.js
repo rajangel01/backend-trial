@@ -1,10 +1,20 @@
+
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const app = express();
-require("dotenv").config();
+
 const ConnectDB = require("./src/database");
 const User = require("./src/user");
 const Question = require("./src/question");
+const {getTotalUsers} = require("./controller/getTotalUser");
+const {getTotalQuestions} = require("./controller/getTotalQuestion");
+const {
+  sendOtp,
+} = require("./src/authController")
+const{
+  verifyOtp,
+} = require("./src/authController")
 let Counter = require("./src/counter");
 
 ConnectDB();
@@ -73,6 +83,20 @@ app.post("/login", async (req, res) => {
   }
 });
 
+app.post("/login-by-email", async (req, res) => {
+  try {
+    const email = req.body.email;
+
+    // check user
+    const user = await User.findOne({ email });
+    if (!user) return res.status(400).json({ msg: "Invalid credentials" });
+
+    res.send(user);
+  } catch (err) {
+    res.status(500).send("Server Error");
+  }
+});
+
 app.post("/add-question", async (req, res) => {
   try {
     const question = new Question(req.body);
@@ -108,8 +132,13 @@ app.get("/all-questions", async (req, res) => {
   }
 });
 
-// app.listen(port, () => {
-//   console.log("server is running on port " + port);
-// });
+app.post("/send-otp", sendOtp);
+app.post("/verify-otp", verifyOtp);
+app.get("/total-users", getTotalUsers);
+app.get("/total-questions", getTotalQuestions);
 
-module.exports = app
+app.listen(port, () => {
+  console.log("server is running on port " + port);
+});
+
+// module.exports = app
