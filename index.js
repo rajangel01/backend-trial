@@ -137,8 +137,8 @@ app.post("/verify-otp", verifyOtp);
 app.get("/total-users", getTotalUsers);
 app.get("/total-questions", getTotalQuestions);
 
-app.listen(port, () => {
-  console.log("server is running on port " + port);
-});
+// app.listen(port, () => {
+//   console.log("server is running on port " + port);
+// });
 
-// module.exports = app
+module.exports = app
