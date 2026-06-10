@@ -15,6 +15,10 @@ const {
 const{
   verifyOtp,
 } = require("./src/authController")
+const {
+  updateYoutubeVideo,
+  getYoutubeVideo,
+} = require("./controller/ytLink");
 let Counter = require("./src/counter");
 
 ConnectDB();
@@ -136,6 +140,8 @@ app.post("/send-otp", sendOtp);
 app.post("/verify-otp", verifyOtp);
 app.get("/total-users", getTotalUsers);
 app.get("/total-questions", getTotalQuestions);
+app.put("/youtube-video-update", updateYoutubeVideo);
+app.get("/youtube-video", getYoutubeVideo);
 
 // app.listen(port, () => {
 //   console.log("server is running on port " + port);
