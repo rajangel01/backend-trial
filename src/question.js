@@ -1,4 +1,4 @@
-const mongoose =  require("mongoose");
+const mongoose = require("mongoose");
 
 const questionSchema = new mongoose.Schema(
   {
@@ -6,6 +6,12 @@ const questionSchema = new mongoose.Schema(
       type: String,
       required: true,
       unique: true,
+    },
+
+    questionType: {
+      type: String,
+      enum: ["MCQ", "MSQ", "NAT"],
+      required: true,
     },
 
     question: {
@@ -39,7 +45,7 @@ const questionSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
-module.exports= mongoose.model("question", questionSchema);
+module.exports = mongoose.model("question", questionSchema);

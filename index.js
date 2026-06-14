@@ -9,6 +9,8 @@ const User = require("./src/user");
 const Question = require("./src/question");
 const {getTotalUsers} = require("./controller/getTotalUser");
 const {getTotalQuestions} = require("./controller/getTotalQuestion");
+// const { submitTest } = require("./controller/testController");
+// require("./controller/dailyTestCron")
 const {
   sendOtp,
 } = require("./src/authController")
@@ -20,12 +22,23 @@ const {
   getYoutubeVideo,
 } = require("./controller/ytLink");
 let Counter = require("./src/counter");
+const cron = require("node-cron");
+const generateDailyTest = require("./controller/generateDailyTest");
+const { getDailyTest } = require("./controller/testController");
 
 ConnectDB();
 app.use(cors());
 app.use(express.json());
 
 const port = process.env.PORT || 8080;
+
+//Update Daily Question
+cron.schedule("0 0 * * *", async () => {
+  console.log("Generating Daily Test...");
+  await generateDailyTest();
+});
+
+// generateDailyTest();
 
 // Counter Function
 async function getNextUserId() {
@@ -136,12 +149,24 @@ app.get("/all-questions", async (req, res) => {
   }
 });
 
+
+// app.get("/daily-test", async (req, res) => {
+
+//     const test = await DailyTest.findOne()
+//         .populate("questions");
+
+//     res.json(test);
+
+// });
+
 app.post("/send-otp", sendOtp);
 app.post("/verify-otp", verifyOtp);
 app.get("/total-users", getTotalUsers);
 app.get("/total-questions", getTotalQuestions);
 app.put("/youtube-video-update", updateYoutubeVideo);
 app.get("/youtube-video", getYoutubeVideo);
+app.get("/daily-test", getDailyTest);
+// app.post("/submit-test", submitTest);
 
 // app.listen(port, () => {
 //   console.log("server is running on port " + port);
