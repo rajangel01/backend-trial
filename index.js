@@ -168,8 +168,8 @@ app.get("/youtube-video", getYoutubeVideo);
 app.get("/daily-test", getDailyTest);
 // app.post("/submit-test", submitTest);
 
-// app.listen(port, () => {
-//   console.log("server is running on port " + port);
-// });
+app.listen(port, () => {
+  console.log("server is running on port " + port);
+});
 
-module.exports = app
+// module.exports = app

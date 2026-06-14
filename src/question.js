@@ -30,7 +30,14 @@ const questionSchema = new mongoose.Schema(
 
     correctAnswer: {
       type: String,
-      required: true,
+    },
+    correctAnswers: {
+      type: [String], // Array
+      default: [],
+    },
+    answer: {
+      type: Number,
+      default: null,
     },
 
     solution: String,
