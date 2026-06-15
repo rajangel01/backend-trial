@@ -5,7 +5,6 @@ const DailyTest = require("../src/dailyTest");
 
 const generateDailyTest = async () => {
   try {
-
     // Purana test delete
     await DailyTest.deleteMany({});
 
@@ -13,16 +12,15 @@ const generateDailyTest = async () => {
     const questions = await Question.aggregate([
       { $sample: { size: 25 } }
     ]);
+    // _id remove karo taaki naye documents create hon
+    const copiedQuestions = questions.map(({ _id, ...rest }) => rest);
 
-    const questionIds = questions.map(q => q._id);
+    // DailyTest me save karo
+    await DailyTest.insertMany(copiedQuestions);
 
-    await DailyTest.create({
-      questions: questionIds
-    });
-
-    console.log("New Daily Test Generated");
-  } catch (err) {
-    console.log(err);
+    console.log("Daily Test Generated");
+  } catch (error) {
+    console.log(error);
   }
 };
 

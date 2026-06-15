@@ -2,19 +2,59 @@
 
 const mongoose = require("mongoose");
 
-const dailyTestSchema = new mongoose.Schema({
-  questions: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Question"
-  },{
-    type: mongoose.Schema.Types.qId,
-    ref: "Question"
-  }
-],
-  createdAt: {
-    type: Date,
-    default: Date.now
-  }
-});
+const dailyTestSchema = new mongoose.Schema(
+  {
+    qId: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+
+    questionType: {
+      type: String,
+      enum: ["MCQ", "MSQ", "NAT"],
+      required: true,
+    },
+
+    question: {
+      type: String,
+      required: true,
+    },
+
+    qImage: String,
+
+    options: [
+      {
+        text: String,
+        image: String,
+      },
+    ],
+
+    correctAnswer: {
+      type: String,
+    },
+    correctAnswers: {
+      type: [String], // Array
+      default: [],
+    },
+    answer: {
+      type: Number,
+      default: null,
+    },
+
+    solution: String,
+
+    solutionImage: String,
+
+    subject: String,
+
+    marks: Number,
+
+    negativeMarks: Number,
+  },
+  {
+    timestamps: true,
+  },
+);
 
 module.exports = mongoose.model("DailyTest", dailyTestSchema);
